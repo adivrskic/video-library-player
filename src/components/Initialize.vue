@@ -52,9 +52,9 @@ export default {
   display: flex;
   flex-direction: column;
   margin: 0 auto;
-  width: 18rem;
+  width: 20rem;
   max-width: 95%;
-  box-shadow: 0 0 9px rgba(0,0,0,.18);
+  box-shadow: 0 0 6px rgba(0,0,0,.15);
   padding: 2rem;
   background-color: #fff;
   border-radius: 2px;
@@ -64,6 +64,7 @@ export default {
 h2 {
   font-size: 1.5rem;
   margin: 0 0 1.25rem 0;
+  color: #ccc;
 }
 
 input:last-of-type {
@@ -78,7 +79,7 @@ label {
 .initialize-field, .initialize-submit {
   padding: .5rem;
   border-radius: 2px;
-  border: 1px solid #5d5c61;
+  border: 1px solid #ccc;
   opacity: .8;
   transition: opacity .2s ease-in-out;
 }
@@ -91,11 +92,12 @@ label {
 }
 
 .initialize-submit {
-  background: #557a95;
+  background: #456aaf;
   border: none;
   outline: none;
   color: #fff;
   width: min-content;
   cursor: pointer;
+  text-transform: uppercase;
 }
 </style>

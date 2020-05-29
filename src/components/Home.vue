@@ -2,14 +2,19 @@
   <div>
     <div class="grid">
         <div class="grid-item" 
-            v-for="item in this.tree.children" 
-            v-bind:key="item"
-            @click="showEpisodes(item.path, item.children[0])"
+             v-for="item in this.tree.children" 
+             v-bind:key="Math.random() + item"
+             @click="showEpisodes(item.path, item.children[0])"
         >
-            <img class="grid-item-image" 
+            <img v-if="item.children[1]" 
+                class="grid-item-image" 
                  :src="item.path + '/' + item.children[1].name" 
             >
-
+            <h2 v-else 
+                class="grid-no-image">
+                {{ noImageText }}
+            </h2>
+            
             <p class="grid-item-title">{{ item.name }}</p>
             <div class="grid-item-overlay"></div>
         </div>
@@ -45,6 +50,7 @@ export default {
             currentEpisode: '',
             showEpisodesModal: false,
             showVideoPlayer: false,
+            noImageText: 'No Image Available'
         }
     },
     components: {
@@ -63,7 +69,6 @@ export default {
             } else {
                 document.body.className += ' ' + 'no-overflow';
             }
-
         }
     },
     created() {
@@ -147,6 +152,17 @@ export default {
         z-index: 3;
     }
 
+    .grid-no-image {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        height: 100%;
+        margin: 0;
+        font-size: 2.5rem;
+        color: #ddd;
+    }
+
     /* width */
     ::-webkit-scrollbar {
         width: .325rem;
@@ -154,17 +170,12 @@ export default {
 
     /* Track */
     ::-webkit-scrollbar-track {
-        background: #557a95;
+        background: #fff;
     }
 
     /* Handle */
     ::-webkit-scrollbar-thumb {
-        background: #fff;
+        background: #ddd;
         border-radius: 2rem;
     }
-
-    /* Handle on hover */
-    /* ::-webkit-scrollbar-thumb:hover {
-    background: #555;
-    } */
 </style>

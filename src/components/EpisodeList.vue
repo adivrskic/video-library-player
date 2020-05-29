@@ -1,15 +1,20 @@
 <template>
   <div id="modal" class="container" @click="closeModal">
-      <div class="content">
-          <ul>
-                <li v-for="episode in episodes.children" 
-                    :key="episode.name"
-                    @click="openPlayer(episode.path)">
-                    <input type="checkbox" /> 
-                    {{ episode.name }}
-                </li>
-          </ul>
-          <h2 v-if="Object.keys(episodes.children).length == 0">{{ noVideosMessage }}</h2>
+      <div id="episode-modal" class="content">
+            <ul>
+                    <li v-for="episode in episodes.children" 
+                        :key="Math.random() + episode.name"
+                        @click="openPlayer(episode.path)">
+                        <input type="checkbox" /> 
+                        {{ episode.name }}
+                    </li>
+            </ul>
+            <div v-if="Object.keys(episodes.children).length == 0"
+                class="error"
+            >
+                <Alert />
+                <h2 >{{ noVideosMessage }}</h2>
+            </div>
       </div>
   </div>
 </template>
@@ -17,15 +22,20 @@
 <script>
 import { eventBus } from '../main.js'
 
+import Alert from '../assets/Alert'
+
 export default {
     data() {
         return {
-            noVideosMessage: 'Sorry, there were no videos to load'
+            noVideosMessage: 'Sorry, couldn\'t find any .mp4 videos'
         }
+    },
+    components: {
+        Alert
     },
     props: ['path', 'episodes'],
     methods: {
-        closeModal: function(e) {
+        closeModal(e) {
             let modal = document.getElementById('modal');
             if(e.target === modal) {
                 eventBus.$emit('closeModal', false)
@@ -33,7 +43,6 @@ export default {
             
         },
         openPlayer(path) {
-            console.log(path, name)
             eventBus.$emit('showVideoPlayer', {
                 'showVideoPlayer': true,
                 'episode': path
@@ -56,6 +65,7 @@ export default {
     overflow: hidden;
     background: rgba(0,0,0,.5);
     pointer-events: all;
+    z-index: 10;
 }
 
 .content {
@@ -87,11 +97,27 @@ li {
 }
 
 li:hover {
-    background: rgba(85, 122, 149, .2)
+    background: rgba(204,204,204,.2)
+}
+
+.error {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem;
+    height: 100%;
 }
 
 h2 {
     padding: 1rem;
     margin: 0;
+    color: #ccc;
+}
+
+svg {
+    width: 75%;
+    height: 13.75rem;
+    margin-bottom: 2.5rem;
 }
 </style>

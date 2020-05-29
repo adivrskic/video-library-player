@@ -66,7 +66,7 @@ body, #app {
 }
 
 #app {
-  background-color: #557a95;
+  background-color: #fff;
 }
 
 .no-overflow {
