@@ -52,8 +52,9 @@ export default {
   display: flex;
   flex-direction: column;
   margin: 0 auto;
-  width: 20rem;
-  max-width: 95%;
+  width: 33.333%;
+  min-width: 18rem;
+  max-width: 30rem;
   box-shadow: 0 0 6px rgba(0,0,0,.15);
   padding: 2rem;
   background-color: #fff;

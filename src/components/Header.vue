@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <Logo />
-    <div @click="openMenu" class="menu-container">
+    <div v-if="Object.keys(userInfoJson).length !== 0" @click="openMenu" class="menu-container">
         <Hamburger />
     </div>
 
@@ -16,10 +16,13 @@ import Menu from './Menu'
 
 import { eventBus } from '../main.js'
 
+import userInfoJson from '../../userinfo.json'
+
 export default {
     data () {
         return {
-            showMenuModal: false
+            showMenuModal: false,
+            userInfoJson
         }
     },
     components: {

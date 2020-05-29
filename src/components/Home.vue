@@ -101,7 +101,7 @@ export default {
         grid-gap: 1em;
         color: #fff;
         padding: 1rem;
-        height: calc(100vh - 6.5rem);
+        height: calc(100vh - 7.25rem);
         overflow-y: scroll;
     }
 
@@ -165,7 +165,7 @@ export default {
 
     /* width */
     ::-webkit-scrollbar {
-        width: .325rem;
+        width: .33rem;
     }
 
     /* Track */
@@ -176,6 +176,5 @@ export default {
     /* Handle */
     ::-webkit-scrollbar-thumb {
         background: #ddd;
-        border-radius: 2rem;
     }
 </style>

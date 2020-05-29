@@ -5,7 +5,6 @@
                     <li v-for="episode in episodes.children" 
                         :key="Math.random() + episode.name"
                         @click="openPlayer(episode.path)">
-                        <input type="checkbox" /> 
                         {{ episode.name }}
                     </li>
             </ul>
