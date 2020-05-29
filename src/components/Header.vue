@@ -1,51 +1,51 @@
 <template>
-  <div class="container">
-    <Logo />
-    <div v-if="Object.keys(userInfoJson).length !== 0" @click="openMenu" class="menu-container">
-        <Hamburger />
-    </div>
+    <div class="container">
+        <Logo />
+        <div v-if="Object.keys(userInfoJson).length !== 0" @click="openMenu" class="menu-container">
+            <Hamburger />
+        </div>
 
-    <Menu v-if="showMenuModal" />
-  </div>
+        <Menu v-if="showMenuModal" />
+    </div>
 </template>
 
 <script>
-import Logo from '../assets/Logo'
-import Hamburger from '../assets/Hamburger'
-import Menu from './Menu'
+    import Logo from '../assets/Logo'
+    import Hamburger from '../assets/Hamburger'
+    import Menu from './Menu'
 
-import { eventBus } from '../main.js'
+    import { eventBus } from '../main.js'
 
-import userInfoJson from '../../userinfo.json'
+    import userInfoJson from '../../userinfo.json'
 
-export default {
-    data () {
-        return {
-            showMenuModal: false,
-            userInfoJson
-        }
-    },
-    components: {
-        Hamburger,
-        Logo,
-        Menu
-    },
-    methods : {
-        openMenu() {
-            this.showMenuModal = !this.showMenuModal;
-            if(document.body.className.indexOf('no-overflow') > -1) {
-                document.body.className = document.body.className.replace("no-overflow","");
-            } else {
-                document.body.className += ' ' + 'no-overflow';
+    export default {
+        data () {
+            return {
+                showMenuModal: false,
+                userInfoJson
             }
+        },
+        components: {
+            Hamburger,
+            Logo,
+            Menu
+        },
+        methods : {
+            openMenu() {
+                this.showMenuModal = !this.showMenuModal;
+                if(document.body.className.indexOf('no-overflow') > -1) {
+                    document.body.className = document.body.className.replace("no-overflow","");
+                } else {
+                    document.body.className += ' ' + 'no-overflow';
+                }
+            }
+        },
+        created() {
+            eventBus.$on('closeModal', val => {
+                this.showMenuModal = val;
+            })
         }
-    },
-    created() {
-        eventBus.$on('closeModal', val => {
-            this.showMenuModal = val;
-        })
     }
-}
 </script>
 
 <style scoped>

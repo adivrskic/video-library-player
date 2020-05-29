@@ -1,92 +1,93 @@
 <template>
-  <div>
-    <div class="grid">
-        <div class="grid-item" 
-             v-for="item in this.tree.children" 
-             v-bind:key="Math.random() + item"
-             @click="showEpisodes(item.path, item.children[0])"
-        >
-            <img v-if="item.children[1]" 
-                class="grid-item-image" 
-                 :src="item.path + '/' + item.children[1].name" 
+    <div>
+        <div class="grid">
+            <div class="grid-item" 
+                 v-for="item in this.tree.children" 
+                 v-bind:key="Math.random() + item"
+                 @click="showEpisodes(item.path, item.children[0])"
             >
-            <h2 v-else 
-                class="grid-no-image">
-                {{ noImageText }}
-            </h2>
-            
-            <p class="grid-item-title">{{ item.name }}</p>
-            <div class="grid-item-overlay"></div>
+                <img v-if="item.children[1]" 
+                     class="grid-item-image" 
+                     :src="item.path + '/' + item.children[1].name" 
+                >
+                <h2 v-else 
+                    class="grid-no-image">
+                    {{ noImageText }}
+                </h2>
+                
+                <p class="grid-item-title">{{ item.name }}</p>
+                <div class="grid-item-overlay"></div>
+            </div>
         </div>
-    </div>
 
-    <EpisodeList 
-        v-if="showEpisodesModal" 
-        :path="dir" 
-        :episodes="episodes" 
-    />
-    <VideoPlayer
-        v-if="showVideoPlayer" 
-        :path="dir" 
-        :currentEpisode="currentEpisode" 
-    />
-  </div>
+        <EpisodeList 
+            v-if="showEpisodesModal" 
+            :path="dir" 
+            :episodes="episodes" 
+        />
+
+        <VideoPlayer
+            v-if="showVideoPlayer" 
+            :path="dir" 
+            :currentEpisode="currentEpisode" 
+        />
+    </div>
 </template>
 
 <script>
-import { eventBus } from '../main.js'
+    import { eventBus } from '../main.js'
 
-import EpisodeList from './EpisodeList';
-import VideoPlayer from './VideoPlayer';
+    import EpisodeList from './EpisodeList';
+    import VideoPlayer from './VideoPlayer';
 
-const dirTree = require('directory-tree');
+    const dirTree = require('directory-tree');
 
-export default {
-    data () {
-        return {
-            dir:'C:/Users/Adi/Videos/anime',
-            tree: '',
-            episodes: '',
-            currentEpisode: '',
-            showEpisodesModal: false,
-            showVideoPlayer: false,
-            noImageText: 'No Image Available'
-        }
-    },
-    components: {
-        EpisodeList,
-        VideoPlayer
-    },
-    methods: {
-        readDirectory() {
-            this.tree = dirTree(this.dir);
-        },
-        showEpisodes(path, episodes) {
-            this.episodes = episodes;
-            this.showEpisodesModal = !this.showEpisodesModal;
-            if(document.body.className.indexOf('no-overflow') > -1) {
-                document.body.className = document.body.className.replace("no-overflow","");
-            } else {
-                document.body.className += ' ' + 'no-overflow';
+    export default {
+        data () {
+            return {
+                dir:'C:/Users/Adi/Videos/anime',
+                tree: '',
+                episodes: '',
+                currentEpisode: '',
+                showEpisodesModal: false,
+                showVideoPlayer: false,
+                noImageText: 'No Image Available'
             }
+        },
+        components: {
+            EpisodeList,
+            VideoPlayer
+        },
+        methods: {
+            readDirectory() {
+                this.tree = dirTree(this.dir);
+            },
+            showEpisodes(path, episodes) {
+                this.episodes = episodes;
+                this.showEpisodesModal = !this.showEpisodesModal;
+                if(document.body.className.indexOf('no-overflow') > -1) {
+                    document.body.className = document.body.className.replace("no-overflow","");
+                } else {
+                    document.body.className += ' ' + 'no-overflow';
+                }
+            }
+        },
+        created() {
+            this.readDirectory(),
+            eventBus.$on('closeModal', val => {
+                this.showEpisodesModal = val;
+            }),
+
+            eventBus.$on('showVideoPlayer', val => {
+                this.currentEpisode = val.episode;
+                this.showVideoPlayer = val.showVideoPlayer;
+            }),
+
+            eventBus.$on('closeVideoPlayer', val => {
+                this.showVideoPlayer = val
+            })
         }
-    },
-    created() {
-        this.readDirectory(),
-        eventBus.$on('closeModal', val => {
-            this.showEpisodesModal = val;
-        }),
-
-        eventBus.$on('showVideoPlayer', val => {
-            this.currentEpisode = val.episode;
-            this.showVideoPlayer = val.showVideoPlayer;
-        }),
-
-        eventBus.$on('closeVideoPlayer', val => {
-            this.showVideoPlayer = val
-        })
     }
-}
 </script>
 
 <style scoped>
